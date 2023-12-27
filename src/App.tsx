@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [count, setCount] = useState<number>(0);
+
+  const onClickIncHandler = () => setCount(count + 1);
+  const onClickClearHandler = () => setCount(0);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <span className={count === 5 ? 'RedCount' : 'Count'}>{count}</span>
+      <div className="ButtonBlock">
+        <button className="Button" onClick={onClickIncHandler} disabled={count === 5}>
+          inc
+        </button>
+        <button className="Button" onClick={onClickClearHandler} disabled={count === 0}>
+          clear
+        </button>
+      </div>
     </div>
   );
 }
