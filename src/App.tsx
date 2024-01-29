@@ -29,32 +29,64 @@ function App() {
 
   return (
     <div className="App">
-      <div>
-        <Input type="number" value={maxValue} onChange={onChangeMaxValueHandler} />
-        <Input type="number" value={minValue} onChange={onChangeMinValueHandler} />
+      <div className="limitWrapper">
+        <div>
+          <span className="inputTitle">max</span>
+          <Input
+            type="number"
+            value={maxValue}
+            onChange={onChangeMaxValueHandler}
+            className={'input'}
+          />
+        </div>
+        <div>
+          <span className="inputTitle">min</span>
+          <Input
+            type="number"
+            value={minValue}
+            onChange={onChangeMinValueHandler}
+            className={'input'}
+          />
+        </div>
         <div>
           <Button
             name={'set'}
-            disabled={maxValue <= minValue}
+            disabled={!(maxValue >= 0 && minValue >= 0) || maxValue <= minValue}
             className={'Button'}
             onClick={onClickMinMaxInputHandler}
           />
         </div>
       </div>
-      <span className={count === settedMaxValue ? 'RedCount' : 'Count'}>{count}</span>
-      <div className="ButtonBlock">
-        <Button
-          name={'inc'}
-          disabled={count === settedMaxValue}
-          className={'Button'}
-          onClick={onClickIncHandler}
-        />
-        <Button
-          name={'clear'}
-          disabled={count === settedMinValue}
-          className={'Button'}
-          onClick={onClickClearHandler}
-        />
+      <div className="counterWrapper">
+        {/* <div>
+          {maxValue > 0 && minValue > 0 ? (
+            <span className={count === settedMaxValue ? 'RedCount' : 'Count'}>{count}</span>
+          ) : (
+            <span>Please, press "set".</span>
+          )}
+        </div> */}
+
+        {/* {settedMaxValue === maxValue && settedMinValue === minValue ? (
+          <span className={count === settedMaxValue ? 'RedCount' : 'Count'}>{count}</span>
+        ) : (
+          <span>Please, press "set".</span>
+        )} */}
+        <div className="ButtonBlock">
+          <Button
+            name={'inc'}
+            disabled={
+              count === settedMaxValue || maxValue !== settedMaxValue || minValue !== settedMinValue
+            }
+            className={'Button'}
+            onClick={onClickIncHandler}
+          />
+          <Button
+            name={'clear'}
+            disabled={count === settedMinValue}
+            className={'Button'}
+            onClick={onClickClearHandler}
+          />
+        </div>
       </div>
     </div>
   );
