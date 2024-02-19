@@ -1,12 +1,14 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, DetailedHTMLProps, InputHTMLAttributes } from 'react';
 
-type InputProps = {
+type DefaultProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
+
+type InputProps = DefaultProps & {
   type: string;
   value: number;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 };
 
-export const Input = ({ type, value, onChange, className }: InputProps) => {
-  return <input type={type} value={value} onChange={onChange} className={className} min={0} />;
+export const Input = (props: InputProps) => {
+  return <input {...props} min={0} />;
 };
