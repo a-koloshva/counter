@@ -1,50 +1,51 @@
 import React from 'react';
 import { Button } from '../Button/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppRootStateType } from '../../store/store';
+import { CounterType, clearCounterAC, incrementCounterAC } from '../../store/counterReducer';
 
 type CounterBlockProps = {
-  count: number;
-  setCount: (value: number) => void;
-  error: boolean;
-  minValue: number;
-  maxValue: number;
+    error: boolean;
+    setError: (error: boolean) => void;
 };
 
 export const CounterBlock = (props: CounterBlockProps) => {
-  const onClickIncHandler = () => {
-    localStorage.setItem('count', JSON.stringify(props.count));
-    props.setCount(props.count + 1);
-  };
+    const counter = useSelector<AppRootStateType, CounterType>((state) => state.counter);
+    const dispatch = useDispatch();
 
-  const onClickClearHandler = () => {
-    props.setCount(props.minValue);
-    localStorage.setItem('count', JSON.stringify(props.count));
-  };
+    const onClickIncHandler = () => {
+        dispatch(incrementCounterAC());
+    };
 
-  return (
-    <div className="counterWrapper">
-      <div>
-        {!props.error || props.maxValue === props.minValue ? (
-          <span className="error">
-            Warning! Check the parameters and press <b>"set"</b>
-          </span>
-        ) : (
-          <span className={props.count === props.maxValue ? 'redCount' : 'count'}>
-            {props.count}
-          </span>
-        )}
-      </div>
-      <div className="buttonBlock">
-        <Button
-          name={'inc'}
-          disabled={!props.error || props.count === props.maxValue}
-          onClick={onClickIncHandler}
-        />
-        <Button
-          name={'clear'}
-          disabled={!props.error || props.count === props.minValue}
-          onClick={onClickClearHandler}
-        />
-      </div>
-    </div>
-  );
+    const onClickClearHandler = () => {
+        dispatch(clearCounterAC());
+    };
+
+    return (
+        <div className="counterWrapper">
+            <div>
+                {!props.error || counter.maxValue === counter.minValue ? (
+                    <span className="error">
+                        Warning! Check the parameters and press <b>"set"</b>
+                    </span>
+                ) : (
+                    <span className={counter.count === counter.maxValue ? 'redCount' : 'count'}>
+                        {counter.count}
+                    </span>
+                )}
+            </div>
+            <div className="buttonBlock">
+                <Button
+                    name={'inc'}
+                    disabled={counter.count === counter.maxValue}
+                    onClick={onClickIncHandler}
+                />
+                <Button
+                    name={'clear'}
+                    disabled={counter.count === counter.minValue}
+                    onClick={onClickClearHandler}
+                />
+            </div>
+        </div>
+    );
 };
